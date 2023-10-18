@@ -67,8 +67,6 @@ namespace ForekBase.Web.Controllers
             return View(loginVM);
         }
 
-
-
         public IActionResult Register()
         {
             if(!_roleManager.RoleExistsAsync(Permissions.Role_Admin).GetAwaiter().GetResult())
