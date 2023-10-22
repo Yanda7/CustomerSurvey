@@ -1,0 +1,233 @@
+﻿@using ForekBase.Domain.Entities
+@model dynamic
+
+
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <link href="https://cdn.datatables.net/select/1.7.0/css/select.dataTables.min.css" rel="stylesheet" />
+
+</head>
+<link rel="stylesheet" type="text/css" href="~/css/styles.css">
+<div class="col-xl-12">
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fa-solid fa-earth-africa"></i>
+            <span class="text-white">Add Category(s)<span class="text-bold"></span></span>
+          <span class="text-white">
+
+            @if ((string)ViewData["Action"] == "Add")
+                {
+                    <span>Add Category(s)</span>
+                }
+                else if ((string)ViewData["Action"] == "Update")
+                {
+                    <span>Update Category</span>
+                } 
+            </span>
+        </div>
+            <div class="card-body">
+                <form asp-action="AddCategory">
+                    <div class="row">
+                        <div class="col-xl-12 body">
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="form-group col-md-4">
+                                        <label class="control-label">Category Name</label>
+                                        <div class="input-group input1">
+                                            <input name="CategoryName" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label class="control-label">Category Description</label>
+                                        <div class="input-group input1">
+                                            <input name="CategoryDescription" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3 mt-4" style="background-color:whitesmoke;">
+                                        <button type="submit" class="btn btn-success save"><i class="fa fa-save"></i> Save</button>
+                                        <button type="reset" class="btn btn-warning"><i class="fa fa-undo"> Reset</i></button>
+                                        <a class="btn btn-outline-danger float-end" asp-action="" asp-controller=""><i class="fa fa-window-close"></i> Exit</a>
+                                    </div>
+
+                                    <div hidden>
+                                        @Html.TextBox("CategoryId", ViewData["Id"], new {htmlAttributes = new {@class="form-control",name="Id"}})
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      </div>
+   
+    <div class="col-xl-12">
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fa-solid fa-earth-africa"></i>
+            <span class="text-white"> My Categories <span class="text-bold"></span></span>
+        </div>
+        <div class="card-body">
+            <button class="btn btn-danger" id="delete-button" onclick="deleteRow();"> Delete </button>
+            <table class="table mr-5 ml-5 table-striped" id="datatablesSimple">
+                <thead class="head">
+                    <tr>
+
+                        <th class="text-white">
+                            Select
+                        </th>
+
+                        <th class="text-white">
+                            Category Name
+                        </th>
+
+                        <th class="text-white">
+                            Category Description
+                        </th>
+
+                        <th class="text-white">
+                            IsActive
+                        </th>
+                        <th class="text-white">
+                            Action
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Category cat in Model.CatList)
+                    {
+                        <tr>
+
+                            <td>
+                                <input type="checkbox" name="selectbox" class="category-checkbox " data-province-id="@cat.CategoryId">
+                            </td>
+
+                            <td>
+                                @cat.CategoryName
+                            </td>
+                            <td>
+                                @cat.CategoryDescription
+                            </td>
+                            
+
+                            <td>
+                                @cat.IsActive
+                            </td>
+
+                            <td>
+                                <a asp-route-CategoryId="@cat.CategoryId" class="text-primary" asp-action="AddCategory" asp-controller="Category"><i class="fa bi-question-circle-fill"></i> Modify</a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+
+        $("#delete-button").click(function () {
+
+            var selectedProvinceCheckboxes = $(".province-checkbox:checked");
+
+            if (selectedProvinceCheckboxes.length > 0) {
+
+                selectedProvinceCheckboxes.each(function () {
+
+                    var selectedProvinceId = $(this).data("category-id");
+
+                Swal.fire({
+
+                    title: 'Delete Category',
+
+                    text: "Are you sure that you'd like to delete this record",
+
+                    icon: 'warning',
+
+                    footer: 'NB:This will remove the record permanently',
+
+                    showCancelButton: true,
+
+                    confirmButtonColor: '#3085d6',
+
+                    cancelButtonColor: '#d33',
+
+                    confirmButtonText: 'Yes, delete it!',
+
+                    closeOnConfirm: false,
+
+                    closeOnCancel: false
+
+                });
+
+                    var url = "/Category/OnRemoveProvince/" + selectedCategoryId;
+
+                    $.ajax({
+
+                        url: url,
+
+                        type: "POST",
+
+                        contentType: "application/json; charset=utf-8",
+
+                        success: OnSuccessResult,
+
+                        error: OnError,
+
+                    });
+
+                function OnSuccessResult(data) {
+
+                    Swal.fire({
+
+                        icon: 'success',
+
+                        title: 'Category Removal',
+
+                        text: 'Category successfully deleted',
+
+                    })
+
+                  location.href = "/Category/Category?CategoryId=" + data.categoryId;
+                }
+
+                function OnError(err) {
+
+                    Swal.fire({
+
+                        icon: 'error',
+
+                        title: 'Category Removal',
+
+                        text: 'An Error Occured: Unable to delete Category!',
+
+                        footer: 'Error'
+                    })
+                }
+
+                });
+
+                }
+
+            
+            else {
+                alert("Please select at least one category to delete.");
+            }
+        });
+</script>
+
+

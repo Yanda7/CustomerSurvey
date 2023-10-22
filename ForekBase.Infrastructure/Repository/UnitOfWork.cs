@@ -14,6 +14,8 @@ namespace ForekBase.Infrastructure.Repository
         public ISurveyRepository Survey { get; private set; }
         public IQuestionRepository Question { get; private set; }
 
+        public ICategoryRepository Category { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -21,6 +23,8 @@ namespace ForekBase.Infrastructure.Repository
             Survey = new SurveyRepository(_db);
 
             Question = new QuestionRepository(_db);
+
+            Category = new CategoryRepository(_db);
 
         }
 

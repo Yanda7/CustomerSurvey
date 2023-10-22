@@ -1,4 +1,5 @@
 ﻿using ForekBase.Application.Common.Interfaces;
+using ForekBase.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForekBase.Web.Controllers
@@ -19,8 +20,18 @@ namespace ForekBase.Web.Controllers
             return View(questions);
         }
 
-        public IActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> AddQuestion()
         {
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddQuestion(Question question)
+        {
+
+
             return View();
         }
     }

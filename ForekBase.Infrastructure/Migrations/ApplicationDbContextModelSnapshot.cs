@@ -51,9 +51,12 @@ namespace ForekBase.Infrastructure.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("QuestionId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("QuestionId1");
 
                     b.ToTable("Answer");
                 });
@@ -135,13 +138,17 @@ namespace ForekBase.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ForekBase.Domain.Entities.Question", b =>
+            modelBuilder.Entity("ForekBase.Domain.Entities.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("CategoryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("CategoryDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreateBy")
                         .HasColumnType("nvarchar(max)");
@@ -158,18 +165,52 @@ namespace ForekBase.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SurveyId")
-                        .HasColumnType("int");
+                    b.HasKey("CategoryId");
 
-                    b.Property<string>("Text")
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ForekBase.Domain.Entities.Question", b =>
+                {
+                    b.Property<Guid>("QuestionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreateBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("QuestionText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SurveyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("SurveyId1")
+                        .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("QuestionId");
 
-                    b.HasIndex("SurveyId");
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("SurveyId1");
 
                     b.ToTable("Questions");
                 });
@@ -345,20 +386,24 @@ namespace ForekBase.Infrastructure.Migrations
                 {
                     b.HasOne("ForekBase.Domain.Entities.Question", "Question")
                         .WithMany("Answers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("QuestionId1");
 
                     b.Navigation("Question");
                 });
 
             modelBuilder.Entity("ForekBase.Domain.Entities.Question", b =>
                 {
-                    b.HasOne("ForekBase.Domain.Entities.Survey", "Survey")
-                        .WithMany("Questions")
-                        .HasForeignKey("SurveyId")
+                    b.HasOne("ForekBase.Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ForekBase.Domain.Entities.Survey", "Survey")
+                        .WithMany("Questions")
+                        .HasForeignKey("SurveyId1");
+
+                    b.Navigation("Category");
 
                     b.Navigation("Survey");
                 });

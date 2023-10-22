@@ -17,5 +17,7 @@ namespace ForekBase.Infrastructure.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
+        public DbSet<Category> Categories { get; set; }
+
     }
 }

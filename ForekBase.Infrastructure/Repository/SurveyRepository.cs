@@ -21,11 +21,10 @@ namespace ForekBase.Infrastructure.Repository
         }
 
 
-        public void Save()
+        public void Save(Survey survey)
         {
             _db.SaveChanges();
         }
-
 
         public void Update(Survey survey)
         {

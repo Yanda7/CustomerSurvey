@@ -1,14 +1,9 @@
-﻿using ForekBase.Domain.Entities.Common;
-using ForekBase.Domain.Entities.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ForekBase.Domain.Entities.Enums;
+using ForekBase.Domain.Entities;
 
-namespace ForekBase.Domain.Entities
+namespace ForekBase.Web.ViewModels
 {
-    public class Question : BaseEntityModel
+    public class QuestionVM
     {
         public Guid QuestionId { get; set; }
 

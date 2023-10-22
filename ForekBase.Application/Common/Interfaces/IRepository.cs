@@ -13,5 +13,10 @@ namespace ForekBase.Application.Common.Interfaces
         IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
         T Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
         void Add(T survey);
-        void Remove(T survey);    }
+        void Remove(T t);  
+
+        void Save(T survey);
+
+        void Update(T t);
+    }
 }

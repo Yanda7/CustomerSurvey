@@ -10,6 +10,7 @@ namespace ForekBase.Application.Common.Interfaces
     {
         ISurveyRepository Survey {  get; }
         IQuestionRepository Question { get; }
+        ICategoryRepository Category { get; }
         void Save();
 
     }

@@ -75,5 +75,15 @@ namespace ForekBase.Infrastructure.Repository
         {
             dbSet.Remove(t);
         }
+//not sure here!
+        public void Save(T t)
+        {
+           _db.SaveChanges();
+        }
+
+        public void Update(T t)
+        {
+            dbSet.Update(t);
+        }
     }
 }
